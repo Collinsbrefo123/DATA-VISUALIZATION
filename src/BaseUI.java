@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BaseUI extends JFrame implements ActionListener {
+    private JPanel panel = new JPanel();
+    private JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    private Container con;
+    private JTable table1 = new JTable(26,26);
 
     //menu
     private JMenuBar mainBar = new JMenuBar();
@@ -28,12 +33,14 @@ public class BaseUI extends JFrame implements ActionListener {
     private JMenuItem histogram = new JMenuItem("Histogram ");
 
 
-
-    public BaseUI() {
+    public BaseUI(){
         super("Data Visualization App");
-        setLayout(new FlowLayout());
-        setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        con = getContentPane();
+        con.add(scrollPane);
+        panel.add(table1);
+        
+
         setJMenuBar(mainBar); //add menu bar
         file.setMnemonic('w');
         //add tabs
@@ -67,17 +74,14 @@ public class BaseUI extends JFrame implements ActionListener {
 
 
 
-
     }
-
-
-    public static void main(String[] args) {
+    public static void main(String []args){
+        final int WIDTH = 500;
+        final int HEIGHT = 500;
         BaseUI frame = new BaseUI();
+        frame.setBounds(850,100,WIDTH, HEIGHT);
         frame.setVisible(true);
-
     }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
