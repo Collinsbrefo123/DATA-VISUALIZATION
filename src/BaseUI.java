@@ -3,16 +3,26 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.swing.JList.*;
 
 public class BaseUI extends JFrame implements ActionListener {
     private JPanel panel = new JPanel();
     private JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     private Container con;
-    private int rowCount = 0;
+    private int rowCount = 1;
     private JTable table1 = new JTable(50, 50);
+    JTableHeader header = table1.getTableHeader();
+    private Color myColor = new Color(0,84,161);
 
+    private TableModel model = new DefaultTableModel(50,1)
+    {
+        public boolean isCellEditable(int row, int column)
+        {
+            return false;
+        }
+    };
+    private JTable table2 = new JTable(model);
 
     //toolbar
     private JToolBar toolBar = new JToolBar();
@@ -60,22 +70,6 @@ public class BaseUI extends JFrame implements ActionListener {
 
 
 
-    //Column sizes
-    public void setTableSize() {
-        TableColumn column = null;
-
-        for (int i = 0; i < 49; i++) {
-            column = table1.getColumnModel().getColumn(i);
-            if (i == 0) {
-                column.setPreferredWidth(50);
-            } else {
-                column.setPreferredWidth(100);
-            }
-        }
-
-
-    }
-
 
     //Constructor
     public BaseUI() {
@@ -86,8 +80,10 @@ public class BaseUI extends JFrame implements ActionListener {
         con.add(scrollPane);
         panel.add(toolBar);
 
-        //toolbar layout
+        //toolbar layout and look
         add(toolBar, BorderLayout.NORTH);
+        toolBar.setBackground(myColor);
+        toolBar.setFloatable(false);
         toolBar.add(button1);
         toolBar.addSeparator(new Dimension(10, 10));
         toolBar.add(button2);
@@ -98,69 +94,79 @@ public class BaseUI extends JFrame implements ActionListener {
         toolBar.addSeparator(new Dimension(0, 10));
         toolBar.add(button5);
 
+
         //add table
+        panel.setLayout(new BorderLayout());
+        panel.add(header, BorderLayout.NORTH);
+        header.setBackground(myColor);
+        panel.add(table2, BorderLayout.WEST);
+        table2.setBackground(myColor);
         panel.add(table1, BorderLayout.CENTER);
+        table1.setForeground(myColor);
+        table1.setSelectionBackground(myColor);
 
 
-        //column letters
-        table1.setValueAt("              A", 0, 1);
-        table1.setValueAt("              B", 0, 2);
-        table1.setValueAt("              C", 0, 3);
-        table1.setValueAt("              D", 0, 4);
-        table1.setValueAt("              E", 0, 5);
-        table1.setValueAt("              F", 0, 6);
-        table1.setValueAt("              G", 0, 7);
-        table1.setValueAt("              H", 0, 8);
-        table1.setValueAt("              I", 0, 9);
-        table1.setValueAt("              J", 0, 10);
-        table1.setValueAt("              K", 0, 11);
-        table1.setValueAt("              L", 0, 12);
-        table1.setValueAt("              M", 0, 13);
-        table1.setValueAt("              N", 0, 14);
-        table1.setValueAt("              O", 0, 15);
-        table1.setValueAt("              P", 0, 16);
-        table1.setValueAt("              Q", 0, 17);
-        table1.setValueAt("              R", 0, 18);
-        table1.setValueAt("              S", 0, 19);
-        table1.setValueAt("              T", 0, 20);
-        table1.setValueAt("              U", 0, 21);
-        table1.setValueAt("              V", 0, 22);
-        table1.setValueAt("              W", 0, 23);
-        table1.setValueAt("              X", 0, 24);
-        table1.setValueAt("              Y", 0, 25);
-        table1.setValueAt("              Z", 0, 26);
-        table1.setValueAt("              AA", 0, 27);
-        table1.setValueAt("              AB", 0, 28);
-        table1.setValueAt("              AC", 0, 29);
-        table1.setValueAt("              AD", 0, 30);
-        table1.setValueAt("              AE", 0, 31);
-        table1.setValueAt("              AF", 0, 32);
-        table1.setValueAt("              AG", 0, 33);
-        table1.setValueAt("              AH", 0, 34);
-        table1.setValueAt("              AI", 0, 35);
-        table1.setValueAt("              AK", 0, 36);
-        table1.setValueAt("              AK", 0, 37);
-        table1.setValueAt("              AL", 0, 38);
-        table1.setValueAt("              AM", 0, 39);
-        table1.setValueAt("              AN", 0, 40);
-        table1.setValueAt("              AO", 0, 41);
-        table1.setValueAt("              AP", 0, 42);
-        table1.setValueAt("              AQ", 0, 43);
-        table1.setValueAt("              AR", 0, 44);
-        table1.setValueAt("              AT", 0, 45);
-        table1.setValueAt("              AU", 0, 46);
-        table1.setValueAt("              AV", 0, 47);
-        table1.setValueAt("              AW", 0, 48);
-        table1.setValueAt("              AX", 0, 49);
+
+         //column header
+        table1.getColumnModel().getColumn(0).setHeaderValue(" ");
+        table1.getColumnModel().getColumn(1).setHeaderValue(" A");
+        table1.getColumnModel().getColumn(2).setHeaderValue(" B");
+        table1.getColumnModel().getColumn(3).setHeaderValue(" C");
+        table1.getColumnModel().getColumn(4).setHeaderValue(" D");
+        table1.getColumnModel().getColumn(5).setHeaderValue(" E");
+        table1.getColumnModel().getColumn(6).setHeaderValue(" F");
+        table1.getColumnModel().getColumn(7).setHeaderValue(" G");
+        table1.getColumnModel().getColumn(8).setHeaderValue(" H");
+        table1.getColumnModel().getColumn(9).setHeaderValue(" I");
+        table1.getColumnModel().getColumn(10).setHeaderValue(" J");
+        table1.getColumnModel().getColumn(11).setHeaderValue(" K");
+        table1.getColumnModel().getColumn(12).setHeaderValue(" L");
+        table1.getColumnModel().getColumn(13).setHeaderValue(" M");
+        table1.getColumnModel().getColumn(14).setHeaderValue(" N");
+        table1.getColumnModel().getColumn(15).setHeaderValue(" O");
+        table1.getColumnModel().getColumn(16).setHeaderValue(" P");
+        table1.getColumnModel().getColumn(17).setHeaderValue(" Q");
+        table1.getColumnModel().getColumn(18).setHeaderValue(" R");
+        table1.getColumnModel().getColumn(19).setHeaderValue(" S");
+        table1.getColumnModel().getColumn(20).setHeaderValue(" T");
+        table1.getColumnModel().getColumn(21).setHeaderValue(" U");
+        table1.getColumnModel().getColumn(22).setHeaderValue(" V");
+        table1.getColumnModel().getColumn(23).setHeaderValue(" W");
+        table1.getColumnModel().getColumn(24).setHeaderValue(" X");
+        table1.getColumnModel().getColumn(25).setHeaderValue(" Y");
+        table1.getColumnModel().getColumn(26).setHeaderValue(" Z");
+        table1.getColumnModel().getColumn(27).setHeaderValue(" AA");
+        table1.getColumnModel().getColumn(28).setHeaderValue(" AB");
+        table1.getColumnModel().getColumn(29).setHeaderValue(" AC");
+        table1.getColumnModel().getColumn(30).setHeaderValue(" AD");
+        table1.getColumnModel().getColumn(31).setHeaderValue(" AE");
+        table1.getColumnModel().getColumn(32).setHeaderValue(" AF");
+        table1.getColumnModel().getColumn(33).setHeaderValue(" AG");
+        table1.getColumnModel().getColumn(34).setHeaderValue(" AH");
+        table1.getColumnModel().getColumn(35).setHeaderValue(" AI");
+        table1.getColumnModel().getColumn(36).setHeaderValue(" AJ");
+        table1.getColumnModel().getColumn(37).setHeaderValue(" AK");
+        table1.getColumnModel().getColumn(38).setHeaderValue(" AL");
+        table1.getColumnModel().getColumn(39).setHeaderValue(" AM");
+        table1.getColumnModel().getColumn(40).setHeaderValue(" AO");
+        table1.getColumnModel().getColumn(41).setHeaderValue(" AP");
+        table1.getColumnModel().getColumn(42).setHeaderValue(" AQ");
+        table1.getColumnModel().getColumn(43).setHeaderValue(" AR");
+        table1.getColumnModel().getColumn(44).setHeaderValue(" AS");
+        table1.getColumnModel().getColumn(45).setHeaderValue(" AT");
+        table1.getColumnModel().getColumn(46).setHeaderValue(" AU");
+        table1.getColumnModel().getColumn(47).setHeaderValue(" AV");
+        table1.getColumnModel().getColumn(48).setHeaderValue(" AW");
+        table1.getColumnModel().getColumn(49).setHeaderValue(" AX");
 
 
-        //row numbers
+        //row header
         for (int j = 0; j < 50; j++) {
-            table1.setValueAt("    " + rowCount, j, 0);
+            table2.setValueAt("       " + rowCount, j, 0);
             rowCount += 1;
-            table1.setValueAt(" ", 0, 0);
 
         }
+
 
         //table selection modes
         table1.setRowSelectionAllowed(true);
@@ -211,6 +217,12 @@ public class BaseUI extends JFrame implements ActionListener {
         lineGraph.addActionListener(this);
         doughnutC.addActionListener(this);
 
+        //tool tips
+        button1.setToolTipText("Pie Chart");
+        button2.setToolTipText("Bar Graph");
+        button3.setToolTipText("Line Graph");
+        button4.setToolTipText("Histogram");
+        button5.setToolTipText("Doughnut Chart");
 
         //remove background from buttons
         button1.setBorder(BorderFactory.createEmptyBorder());
