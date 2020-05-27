@@ -3,7 +3,6 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import javax.swing.JList.*;
 
 public class BaseUI extends JFrame implements ActionListener {
@@ -14,7 +13,7 @@ public class BaseUI extends JFrame implements ActionListener {
     private int rowCount = 1;
     private JTable table1 = new JTable(50, 50);
     JTableHeader header = table1.getTableHeader();
-    private Color myColor = new Color(0,84,161);
+    private Color myColor = new Color(224,224,224);
 
     private TableModel model = new DefaultTableModel(50,1)
     {
@@ -52,7 +51,7 @@ public class BaseUI extends JFrame implements ActionListener {
     private JMenuItem newFile = new JMenuItem("New");
     private JMenuItem open = new JMenuItem("Open");
     private JMenuItem save = new JMenuItem("Save");
-    private JMenuItem Retrieve = new JMenuItem("Retrieve");
+    private JMenuItem saveAs = new JMenuItem("Save As");
     private JMenuItem exit = new JMenuItem("Exit");
 
     //items under Insert
@@ -83,7 +82,6 @@ public class BaseUI extends JFrame implements ActionListener {
 
         //toolbar layout and look
         add(toolBar, BorderLayout.NORTH);
-        toolBar.setBackground(myColor);
         toolBar.setFloatable(false);
         toolBar.add(button1);
         toolBar.addSeparator(new Dimension(10, 10));
@@ -92,7 +90,7 @@ public class BaseUI extends JFrame implements ActionListener {
         toolBar.add(button3);
         toolBar.addSeparator(new Dimension(10, 10));
         toolBar.add(button4);
-        toolBar.addSeparator(new Dimension(0, 10));
+        toolBar.addSeparator(new Dimension(10, 10));
         toolBar.add(button5);
 
 
@@ -100,10 +98,12 @@ public class BaseUI extends JFrame implements ActionListener {
         panel.setLayout(new BorderLayout());
         panel.add(header, BorderLayout.NORTH);
         header.setBackground(myColor);
+        header.setForeground(Color.black);
         panel.add(table2, BorderLayout.WEST);
         table2.setBackground(myColor);
+        table2.setForeground(Color.black);
         panel.add(table1, BorderLayout.CENTER);
-        table1.setForeground(myColor);
+        table1.setForeground(Color.black);
         table1.setSelectionBackground(myColor);
 
 
@@ -187,7 +187,7 @@ public class BaseUI extends JFrame implements ActionListener {
         file.add(newFile);
         file.add(open);
         file.add(save);
-        file.add(Retrieve);
+        file.add(saveAs);
         file.add(exit);
 
         //Insert Menu
@@ -201,201 +201,12 @@ public class BaseUI extends JFrame implements ActionListener {
         graph.add(histogram);
 
 
-
-        //declaring of variables holding values to be stored into database
-        String[][] inputs1 = new String[2][2];
-        // String[][] inputs2 = new String[2][2];
-        String[][] outputs1 = new String[2][2];
-        String[][] outputs2 = new String[2][2];
-
-        String url = "jdbc:mysql://localhost:3306/java_group";
-        String uname= "root";
-        String pword = "";
-        String user[] = new String[2];
         //action listeners
-        //save listeners
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-
-
-                    if(user[0]==null) {
-
-                        // INSERTING INTO DATABASE
-                        outer:
-                        for (int i = 0; i < 2; i++) {
-                            for (int j = 0; j < 2; j++) {
-                                inputs1[i][j] = (String) table1.getModel().getValueAt(i , j );
-                                inputs1[i][j + 1] = (String) table1.getModel().getValueAt(i , j + 1);
-                                System.out.println( inputs1[i][j] +":"+inputs1[i][j + 1]);
-
-                                if (inputs1[i][j] == null || inputs1[i][j + 1] == null) {
-
-
-                                    JOptionPane.showMessageDialog(table1, "The input is null");
-                                    break outer;
-                                } else {
-                                    System.out.println(inputs1[i][j]);
-                                    System.out.println(inputs1[i][j + 1]);
-                                    user[i] = JOptionPane.showInputDialog(null, "Input your name");
-                                    String query = "insert into user_input(f_input,s_input,user) values(?,?,?)";
-                                    Class.forName("com.mysql.jdbc.Driver");
-                                    Connection con = DriverManager.getConnection(url, uname, pword);
-                                    PreparedStatement st = con.prepareStatement(query);
-                                    st.setString(1, inputs1[i][j]);
-                                    st.setString(2, inputs1[i][j + 1]);
-                                    st.setString(3, user[i]);
-                                    int count = st.executeUpdate();
-
-
-                                    st.close();
-                                    con.close();
-                                }
-                                break;
-
-                            }
-                            if (i > 0) {
-                                JOptionPane.showMessageDialog(table1, "The Input is saved");
-
-                            }
-
-                        }
-                        for (int i = 0; i < inputs1.length; i++) {
-                            System.out.println(user[i]);
-                            for (int j = 0; j < inputs1.length; i++) {
-                                System.out.println(inputs1[i][j] + " : " + inputs1[i][j + 1]);
-
-
-                                break;
-                            }
-                        }
-                        String newuser = user[0];
-
-                        //Retrieving the data from the database
-                        for (int i = 0; i < 2; i++) {
-                            String query = "select * from user_input where user=('" + newuser + "')";
-                            Class.forName("com.mysql.jdbc.Driver");
-                            Connection con = DriverManager.getConnection(url, uname, pword);
-                            Statement st = con.createStatement();
-
-                            ResultSet rs = st.executeQuery(query);
-
-                            for (int j = 0; i < 2; i++) {
-                                first:
-                                while (rs.next()) {
-                                    outputs1[i][j] = rs.getString("f_input");
-                                    outputs1[i][j + 1] = rs.getString("s_input");
-
-                                    break first;
-                                }
-
-                            }
-
-
-                        }
-
-
-                        for (int i = 0; i < outputs1.length; i++) {
-                            System.out.println(user[i]);
-                            for (int j = 0; j < outputs1.length; i++) {
-                                System.out.println(outputs1[i][j] + " : " + outputs1[i][j + 1]);
-
-
-                                break;
-                            }
-                        }
-
-                    }else{
-                        for(int i=0;i<outputs2.length;i++) {
-
-                            for(int j=0;j<outputs2.length;j++) {
-                                String name = user[0];
-                                System.out.println(name);
-                                String query = "UPDATE user_input set f_input='?', s_input='?' WHERE user ='?'";
-                                Class.forName("com.mysql.jdbc.Driver");
-
-                                Connection con = DriverManager.getConnection(url, uname, pword);
-
-
-                                PreparedStatement st = con.prepareStatement(query);
-                                st.setString(1,  outputs2[i][j]);
-                                st.setString(2, outputs2[i][j]);
-                                st.setString(3, name);
-                                int count = st.executeUpdate();
-                            }
-
-                        }
-                    }
-
-                }catch (Exception a){
-                    a.printStackTrace();
-                    System.out.println("Error in values insertion");
-
-
-                }
-
-
-
-            }
-        });
-
-        Retrieve.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    String name = JOptionPane.showInputDialog(null,"Enter your username");
-                    for(int i=0;i<2;i++){
-                        String query= "select * from user_input where user=('"+ name +"')";
-                        Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection(url,uname,pword);
-                        Statement st = con.createStatement();
-
-                        ResultSet rs = st.executeQuery(query);
-
-
-                        for(int j=0;i<2;i++){
-                            first: while (rs.next()){
-                                outputs2[i][j]= rs.getString("f_input");
-                                outputs2[i][j+1]= rs.getString("s_input");
-
-                                table1.setValueAt(outputs2[i][j],i,j);
-                                table1.setValueAt(outputs2[i][j+1],i,j+1);
-
-                                break first;
-
-
-                            }
-
-                        }
-
-//                        for(int j=0;j<2;j++){
-//
-//
-////                            table1.setValueAt(outputs1[i][j],i+1,j+1);
-////                            table1.setValueAt(outputs1[i][j+1],i+1,j+2);
-//
-//
-//                            break;
-//                        }
-                        st.close();
-                        con.close();
-
-                    }
-
-
-                    user[0]=name;
-
-                }catch (Exception a){
-                    a.printStackTrace();
-                    System.out.println("Error in values insertion");
-
-                }
-            }
-        });
         exit.addActionListener(this);
         open.addActionListener(this);
         newFile.addActionListener(this);
+        saveAs.addActionListener(this);
+        save.addActionListener(this);
         button1.addActionListener(this);
         button2.addActionListener(this);
         button3.addActionListener(this);
@@ -406,7 +217,6 @@ public class BaseUI extends JFrame implements ActionListener {
         pieChart.addActionListener(this);
         lineGraph.addActionListener(this);
         doughnutC.addActionListener(this);
-
 
         //tool tips
         button1.setToolTipText("Pie Chart");
