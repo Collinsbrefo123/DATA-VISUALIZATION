@@ -6,6 +6,7 @@ public static void main(String []args) {
     BaseUI frame = new BaseUI();
     frame.setBounds(850, 100, WIDTH, HEIGHT);
     frame.setVisible(true);
+
   //  frame.setTableSize();
 }
 }

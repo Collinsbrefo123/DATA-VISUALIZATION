@@ -7,12 +7,19 @@ import java.sql.*;
 import javax.swing.JList.*;
 
 public class BaseUI extends JFrame implements ActionListener {
+    //declaring of variables holding values to be stored into database
+    String[][] inputs1 ;
+    // String[][] inputs2 =  String[2][2];
+    String[][] outputs1;
+    String[][] outputs2 ;
+
+
     private JPanel panel = new JPanel();
     private JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     private Container con;
     private int rowCount = 1;
-    private JTable table1 = new JTable(50, 50);
+    protected JTable table1 = new JTable(50, 50);
     JTableHeader header = table1.getTableHeader();
     private Color myColor = new Color(0,84,161);
 
@@ -28,16 +35,16 @@ public class BaseUI extends JFrame implements ActionListener {
     //toolbar
     private JToolBar toolBar = new JToolBar();
     //buttons on toolbar
-    private ImageIcon pieIcon = new ImageIcon("piechart.png");
-    private JButton button1 = new JButton(pieIcon);
-    private ImageIcon barG = new ImageIcon("bar.png");
-    private JButton button2 = new JButton(barG);
-    private ImageIcon lineG = new ImageIcon("linegraph.png");
-    private JButton button3 = new JButton(lineG);
-    private ImageIcon histoIcon = new ImageIcon("histogram.png");
-    private JButton button4 = new JButton(histoIcon);
-    private ImageIcon doughIcon = new ImageIcon("doughnut.png");
-    private JButton button5 = new JButton(doughIcon);
+    private ImageIcon pieIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\piechart.png");
+    protected JButton button1 = new JButton(pieIcon);
+    private ImageIcon barG = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\bar.png");
+    protected JButton button2 = new JButton(barG);
+    private ImageIcon lineG = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\Linegraph.png");
+    protected JButton button3 = new JButton(lineG);
+    private ImageIcon histoIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\histogram.png");
+    protected JButton button4 = new JButton(histoIcon);
+    private ImageIcon doughIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\doughnut.png");
+    protected JButton button5 = new JButton(doughIcon);
 
     //menu
     private JMenuBar mainBar = new JMenuBar();
@@ -49,18 +56,20 @@ public class BaseUI extends JFrame implements ActionListener {
     private JMenu chart = new JMenu("Chart");
 
     //items under File
-    private JMenuItem newFile = new JMenuItem("New");
-    private JMenuItem open = new JMenuItem("Open");
-    private JMenuItem save = new JMenuItem("Save");
-    private JMenuItem Retrieve = new JMenuItem("Retrieve");
-    private JMenuItem exit = new JMenuItem("Exit");
+    protected JMenuItem newFile = new JMenuItem("New");
+    protected JMenuItem open = new JMenuItem("Open");
+    protected JMenuItem save = new JMenuItem("Save");
+    protected JMenuItem Retrieve = new JMenuItem("Retrieve");
+    protected JMenuItem exit = new JMenuItem("Exit");
+    protected JMenuItem Delete = new JMenuItem("Delete");
+
 
     //items under Insert
-    private JMenuItem pieChart = new JMenuItem("Pie Chart");
-    private JMenuItem barGraph = new JMenuItem("Bar Graph");
-    private JMenuItem doughnutC = new JMenuItem("Doughnut Chart");
-    private JMenuItem lineGraph = new JMenuItem("Line Graph ");
-    private JMenuItem histogram = new JMenuItem("Histogram ");
+    protected JMenuItem pieChart = new JMenuItem("Pie Chart");
+    protected JMenuItem barGraph = new JMenuItem("Bar Graph");
+    protected JMenuItem doughnutC = new JMenuItem("Doughnut Chart");
+    protected JMenuItem lineGraph = new JMenuItem("Line Graph ");
+    protected JMenuItem histogram = new JMenuItem("Histogram ");
 
     //Chart Windows
     JFrame pieFrame = new JFrame();
@@ -189,6 +198,7 @@ public class BaseUI extends JFrame implements ActionListener {
         file.add(save);
         file.add(Retrieve);
         file.add(exit);
+        file.add(Delete);
 
         //Insert Menu
         insert1.add(graph);
@@ -203,10 +213,10 @@ public class BaseUI extends JFrame implements ActionListener {
 
 
         //declaring of variables holding values to be stored into database
-        String[][] inputs1 = new String[2][2];
+      inputs1 = new String[2][2];
         // String[][] inputs2 = new String[2][2];
-        String[][] outputs1 = new String[2][2];
-        String[][] outputs2 = new String[2][2];
+        outputs1 = new String[2][2];
+         outputs2 = new String[2][2];
 
         String url = "jdbc:mysql://localhost:3306/java_group";
         String uname= "root";
@@ -393,6 +403,30 @@ public class BaseUI extends JFrame implements ActionListener {
                 }
             }
         });
+        Delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                String awesome = "";
+                awesome = JOptionPane.showInputDialog(null, "Input your username");
+                String query = "DELETE FROM user_input where user_input.user='" + awesome + "'";
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(url, uname, pword);
+                PreparedStatement st = con.prepareStatement(query);
+                st.executeUpdate();
+                    System.out.println("Data deleted");
+
+
+                st.close();
+                con.close();
+            }catch (Exception a){
+                    a.printStackTrace();
+                }
+            }
+        });
+
+
         exit.addActionListener(this);
         open.addActionListener(this);
         newFile.addActionListener(this);
@@ -443,7 +477,11 @@ public class BaseUI extends JFrame implements ActionListener {
             frame2.setVisible(true);
         }
             else if(source == button1 || source == pieChart){
-                pieFrame.setSize(350,350);
+                PieChart col = new PieChart();
+
+                pieFrame.setSize(1000, 800);
+                pieFrame.add(new PieChart());
+               // pieFrame.pack();
                 pieFrame.setTitle("Pie Chart");
                 pieFrame.setVisible(true);
 
