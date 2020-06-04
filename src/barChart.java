@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class histoGram extends JPanel {
+public class barChart extends JPanel {
     Random rand = new Random();
 
     public ArrayList<Double> values;
@@ -25,16 +25,15 @@ public class histoGram extends JPanel {
         JFrame myField = new JFrame();
         myField.setSize(1000, 800);
         myField.setVisible(true);
-        myField.getContentPane().add(new histoGram());
+        myField.getContentPane().add(new barChart());
         myField.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
     }
 
-    public histoGram() {
+    public barChart() {
         values = new ArrayList<Double>();
         label = new ArrayList<>();
-
 
 
         setBackground(new Color(248, 248, 255));
@@ -72,7 +71,7 @@ public class histoGram extends JPanel {
             s2 -= 50;
 
         }
-        start = 102;
+        start = 110;
         for(int a = 0; a < values.size();a++) {
             float r = rand.nextFloat();
             float gg = rand.nextFloat();
@@ -80,7 +79,7 @@ public class histoGram extends JPanel {
             Color randomColor = new Color(r, gg, b);
             g.setColor(randomColor);
             int y1 = (int) (600-(values.get(a) /20));
-            g.fillRect(start, y1, 70,600 - y1);
+            g.fillRect(start, y1, 60,600 - y1);
             g2.setFont(rotatedFont);
             g2.setColor(Color.black);
             g2.drawString(label.get(a),start+20,610);
@@ -88,6 +87,5 @@ public class histoGram extends JPanel {
         }
 
     }
-
 
 }

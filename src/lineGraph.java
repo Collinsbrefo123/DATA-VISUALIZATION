@@ -1,45 +1,61 @@
-import java.awt.Color;
-import java.awt.Font;
+
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.Random;
+import java.awt.geom.Line2D;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class histoGram extends JPanel {
-    Random rand = new Random();
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+
+
+
+public class lineGraph extends JPanel {
 
     public ArrayList<Double> values;
 
 
     // public float[] values = {7000,4900,8760,6900,4500,7090,5000,6290,5000,6432,7500,7900};
     public ArrayList<String> label;
-    int start = 0;
-
+    int x =0;
+    int size =0;
     public static void main(String[] args) {
 
         JFrame myField = new JFrame();
         myField.setSize(1000, 800);
         myField.setVisible(true);
-        myField.getContentPane().add(new histoGram());
+        myField.getContentPane().add(new lineGraph());
         myField.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
     }
 
-    public histoGram() {
+
+
+    public lineGraph() {
         values = new ArrayList<Double>();
         label = new ArrayList<>();
-
+//        values.add(3456.4);
+//        values.add(1234.3);
+//        values.add(3567.3);
+//        label.add("feb");
+//        label.add("jan");
+//        label.add("mach");
 
 
         setBackground(new Color(248, 248, 255));
         setBorder(new LineBorder(new Color(0, 0, 0), 2));
         setLayout(null);
+
 
     }
 
@@ -48,23 +64,24 @@ public class histoGram extends JPanel {
         super.paintComponent(g);
 
 
+
+
         Graphics2D g2d = (Graphics2D)g;
 
         Graphics2D g2 = (Graphics2D) g;
-        Font font = new Font("Arial", Font.PLAIN, 17);
+        Font font = new Font("Arial", Font.PLAIN, 25);
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.rotate(Math.toRadians(55), 0, 0);
         Font rotatedFont = font.deriveFont(affineTransform);
         g2.setFont(rotatedFont);
 
-        g.fillRect(100, 100, 2, 500);
-        g.fillRect(100, 600, 800, 2);
+
 
         int t = 0;
         int s1 = 605;
         int s2 = 600;
         for(int a =0 ; a < 11; a++) {
-            g.setFont(new Font("Arial", Font.PLAIN, 17));
+            g.setFont(new Font("Arial", Font.PLAIN, 15));
             g.drawString(""+t, 30, s1);
             g.fillRect(100, s2, 800, 1);
             t += 1000;
@@ -72,22 +89,35 @@ public class histoGram extends JPanel {
             s2 -= 50;
 
         }
-        start = 102;
-        for(int a = 0; a < values.size();a++) {
-            float r = rand.nextFloat();
-            float gg = rand.nextFloat();
-            float b = rand.nextFloat();
-            Color randomColor = new Color(r, gg, b);
-            g.setColor(randomColor);
-            int y1 = (int) (600-(values.get(a) /20));
-            g.fillRect(start, y1, 70,600 - y1);
+
+
+
+
+
+        x = 150;
+        size = 11;
+        for(int a = 0; a <values.size()-1;a++) {
+            Double y1 = (double) (600-(values.get(a) /20));
+            Double y2 = (double) (600-(values.get(a + 1) /20));
+            g.setColor(new Color(255, 160, 122));
+            g2.setStroke(new BasicStroke(3));
+            g2.draw(new Line2D.Double(x,y1, x+50, y2));
+            g.fillOval(x-5, (int) (600-(values.get(a) /20) -5), 10, 10);
+
+
+            g.setColor(Color.black);
             g2.setFont(rotatedFont);
-            g2.setColor(Color.black);
-            g2.drawString(label.get(a),start+20,610);
-            start+=70;
+            g2.drawString(label.get(a),x,610);
+
+                g.setColor(new Color(255, 160, 122));
+                g.fillOval((x-5)+50, (int) (600-(values.get(a + 1) /20) -5), 10, 10);
+
+                g.setColor(Color.black);
+                g2.drawString(label.get(a + 1),x+50,610);
+
+            x += 50;
         }
 
+
     }
-
-
 }
