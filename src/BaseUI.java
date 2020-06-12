@@ -247,7 +247,7 @@ public class BaseUI extends JFrame implements ActionListener {
                                 if (column1.get(i) == null || column2.get(i) == null) {
 
 
-                                    JOptionPane.showMessageDialog(table1, "The input is null");
+                                    JOptionPane.showMessageDialog(table1, "The Data is Saved");
                                     column2.remove(i);
                                     column1.remove(i);
                                     break outer;
@@ -309,7 +309,7 @@ public class BaseUI extends JFrame implements ActionListener {
                                 if (column1.get(i) == null || column2.get(i) == null) {
 
 
-                                    JOptionPane.showMessageDialog(table1, "The input is null");
+                                    JOptionPane.showMessageDialog(table1, "The Data is Saved");
                                     column2.remove(i);
                                     column1.remove(i);
                                     break outer;
@@ -428,6 +428,9 @@ public class BaseUI extends JFrame implements ActionListener {
                     PreparedStatement st = con.prepareStatement(query);
                     st.executeUpdate();
                     System.out.println("Data deleted");
+
+                    column2.clear();
+                    column1.clear();
 
 
                     st.close();
