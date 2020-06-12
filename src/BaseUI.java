@@ -38,13 +38,13 @@ public class BaseUI extends JFrame implements ActionListener {
     //toolbar
     private JToolBar toolBar = new JToolBar();
     //buttons on toolbar
-    private ImageIcon pieIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\piechart.png");
+    private ImageIcon pieIcon = new ImageIcon("src/piechart.png");
     protected JButton button1 = new JButton(pieIcon);
-    private ImageIcon barG = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\bar.png");
+    private ImageIcon barG = new ImageIcon("src/bar.png");
     protected JButton button2 = new JButton(barG);
-    private ImageIcon lineG = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\Linegraph.png");
+    private ImageIcon lineG = new ImageIcon("src/Linegraph.png");
     protected JButton button3 = new JButton(lineG);
-    private ImageIcon histoIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\histogram.png");
+    private ImageIcon histoIcon = new ImageIcon("src/histogram.png");
     protected JButton button4 = new JButton(histoIcon);
 //    private ImageIcon doughIcon = new ImageIcon("D:\\downloads\\tutorials\\project\\Java_Project\\DATA-VISUALIZATION\\src\\doughnut.png");
 //    protected JButton button5 = new JButton(doughIcon);
